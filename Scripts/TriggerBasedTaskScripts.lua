@@ -2,44 +2,112 @@ TaskConfig =
 {
     name = "CommonTask",
     coalition = 1,
-    startTrigger = "100",
-    goodEndTrigger = "101",
-    badEndTrigeer = "102",
-    cancelTrigger = "103",
-    startMsgFriendly = "This is start message",
+    startTrigger = "101",
+    goodEndTrigger = "102",
+    badEndTrigeer = "103",
+    cancelTrigger = "104",
+    startMsgFriendly = "This is friendly start message",
     startMsgEnemy = "This is enemy start message",
-    goodEndMsgFriendly = "This is end message"
+    goodEndMsgFriendly = "This is good end message for friendly coalition",
+    goodEndMsgEnemy = "This is good end message for enemy coalition",
+    badEndMsgFriendly = "This is bad end message for friendly",
+    badEndMsgEnemy = "This is bad end message for enemy",
+    cancelEndMsgFriendly = "This is cancel message for friendly",
+    cancelEndMsgEnemy = "This is cancel message for enemy"
 }
 
 ------------------------------------------------------------------------------------------------------
+--taskStates 
+-- 0 - not starter
+-- 1 - active 
+-- 2 - goodEnd
+-- 3 - badEnd
+-- 4 - canceled
+
+MESSAGE_TIME_ON_SCREEN = 5
 
 TaskContoller = {}
 
 function TaskContoller:New(_taskConfig)
     newObj = 
     {
-        taskConfig = _taskConfig
+        taskConfig = _taskConfig,
+        onEndListeners = {},
+        taskState = 0
     }
     self.__index = self
     return setmetatable(newObj, self)
 end
 
 function TaskContoller:StartTask()
+    Debug:Log("StartTask called, task name is " .. self.taskConfig.name)
+    self.taskState = 1
     local startUserFlag = USERFLAG:New(self.taskConfig.startTrigger)
     startUserFlag:Set(1)
 
-    self:MessageToTaskCoalition(self.taskConfig.startMsgFriendly, 10)
-    self:MessageToEnemyCoalition(self.taskConfig.startMsgEnemy, 10)
+    self:MessageToTaskCoalition(self.taskConfig.startMsgFriendly, MESSAGE_TIME_ON_SCREEN)
+    self:MessageToEnemyCoalition(self.taskConfig.startMsgEnemy, MESSAGE_TIME_ON_SCREEN)
 
-    thisTask = self
 
     local goodEndEvent = UserFlagCather:New(self.taskConfig.goodEndTrigger, true)
-    goodEndEvent:AddListener(thisTask, "OnGoodEndTrigger")
+    goodEndEvent:AddListener(self, "OnGoodEndTrigger")
 
+    local badEndEvent = UserFlagCather:New(self.taskConfig.badEndTrigeer, true)
+    badEndEvent:AddListener(self, "OnBadEndTrigger")
+
+    local cancelEndEvent = UserFlagCather:New(self.taskConfig.cancelTrigger, true)
+    cancelEndEvent:AddListener(self, "OnCancelEndTrigger")
+
+    Debug:Log("StartTask end successfully, task name is " .. self.taskConfig.name)
+end
+
+function TaskContoller:AddOnEndEventListener(object)
+    table.insert( self.onEndListeners, object )
+end
+
+function TaskContoller:EndTask()
+    for i, v in ipairs(self.onEndListeners) do
+        v:OnTaskEnd(self.taskState)
+    end
 end
 
 function TaskContoller:OnGoodEndTrigger()
-    self:MessageToTaskCoalition(self.taskConfig.goodEndMsgFriendly, 10)
+    if self.taskState ~= 1 then
+        Debug:Log("LOGIC ERROR: OnGoodEndTrigger called with task state = " .. self.taskState .. " task name is " .. self.taskConfig.name)
+        return 
+    end
+
+    Debug:Log("OnGoodEndTrigger called, task name is " .. self.taskConfig.name)
+    self.taskState = 2
+    self:MessageToTaskCoalition(self.taskConfig.goodEndMsgFriendly, MESSAGE_TIME_ON_SCREEN)
+    self:MessageToEnemyCoalition(self.taskConfig.goodEndMsgEnemy, MESSAGE_TIME_ON_SCREEN)
+    self:EndTask()
+end
+
+function TaskContoller:OnBadEndTrigger()
+    if self.taskState ~= 1 then
+        Debug:Log("LOGIC ERROR: OnBadEndTrigger called with task state = " .. self.taskState .. " task name is " .. self.taskConfig.name)
+        return 
+    end
+
+    Debug:Log("OnBadEndTrigger called, task name is " .. self.taskConfig.name)
+    self.taskState = 3
+    self:MessageToTaskCoalition(self.taskConfig.badEndMsgFriendly, MESSAGE_TIME_ON_SCREEN)
+    self:MessageToEnemyCoalition(self.taskConfig.badEndMsgEnemy, MESSAGE_TIME_ON_SCREEN)
+    self:EndTask()
+end
+
+function TaskContoller:OnCancelEndTrigger()
+    if self.taskState ~= 1 then
+        Debug:Log("LOGIC ERROR: OnCancelEndTrigger called with task state = " .. self.taskState .. " task name is " .. self.taskConfig.name)
+        return 
+    end
+
+    Debug:Log("OnCancelEndTrigger called, task name is " .. self.taskConfig.name)
+    self.taskState = 4
+    self:MessageToTaskCoalition(self.taskConfig.cancelEndMsgFriendly, MESSAGE_TIME_ON_SCREEN)
+    self:MessageToEnemyCoalition(self.taskConfig.cancelEndMsgEnemy, MESSAGE_TIME_ON_SCREEN)
+    self:EndTask()
 end
 
 function TaskContoller:MessageToTaskCoalition(text, duration)
@@ -97,11 +165,10 @@ end
 function UserFlagCather:AddListener(object, funcName)
     self._objToCall = object
     self._callFuncName = funcName
-    thisObj = self
 
     self._sheduler = SCHEDULER:New( nil, 
     function()
-        thisObj:Check()
+        self:Check()
     end, {}, 1, 1
     )
 end
@@ -119,6 +186,11 @@ function UserFlagCather:Check()
     if self._flag ~= newFlag then
         self:Call(newFlag)
         self._flag = newFlag
+    end
+
+    if self._objToCall == nil then 
+        self._sheduler = nil
+        self = nil
     end
 end
 
