@@ -78,7 +78,6 @@ function GroupMenuManager:AddMenuCommandForGroupsWithPrefix(_prefix, _menuComman
     local thisObj = self
     function PlayerEnterUnitEvent:OnEventBirth(EventData)
         thisObj:InitCommands(_prefix, _menuCommandParent, _menuCommandName)
-        Debug:Log("GroupMenuManager:AddMenuCommandForGroupsWithPrefix, OnEventBirth call")
     end
 end
 

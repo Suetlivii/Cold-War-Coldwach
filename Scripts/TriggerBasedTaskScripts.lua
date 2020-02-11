@@ -67,7 +67,7 @@ end
 
 function TaskContoller:EndTask()
     for i, v in ipairs(self.onEndListeners) do
-        v:OnTaskEnd(self.taskState)
+        v:OnTaskEnd(self.taskConfig, self.taskState)
     end
 end
 
