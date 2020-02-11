@@ -69,11 +69,17 @@ function GroupMenuManager:New()
 end
 
 function GroupMenuManager:AddMenuCommandForGroupsWithPrefix(_prefix, _menuCommandParent, _menuCommandName)
-    self._sheduler = SCHEDULER:New( nil, 
-    function()
-        self:InitCommands(_prefix, _menuCommandParent, _menuCommandName)
-    end, {}, 1, 1
-    )
+    self:InitCommands(_prefix, _menuCommandParent, _menuCommandName)
+
+    local PlayerEnterUnitEvent = EVENTHANDLER:New()
+    PlayerEnterUnitEvent:HandleEvent(EVENTS.Birth)
+
+
+    local thisObj = self
+    function PlayerEnterUnitEvent:OnEventBirth(EventData)
+        thisObj:InitCommands(_prefix, _menuCommandParent, _menuCommandName)
+        Debug:Log("GroupMenuManager:AddMenuCommandForGroupsWithPrefix, OnEventBirth call")
+    end
 end
 
 function GroupMenuManager:InitCommands(_prefix, _menuCommandParent, _menuCommandName)
