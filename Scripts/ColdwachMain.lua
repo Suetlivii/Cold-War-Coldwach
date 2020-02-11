@@ -20,3 +20,6 @@ BlueMission01 =
 
 testTask = TaskContoller:New(BlueMission01)
 testTask:StartTask()
+
+test = GroupMenuManager:New()
+test:AddMenuCommandForGroupsWithPrefix("TG", "testParent", "testCommand")
