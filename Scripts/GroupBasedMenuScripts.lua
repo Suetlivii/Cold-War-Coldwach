@@ -107,5 +107,7 @@ end
 
 function GroupMenuManager:OnCommand(_eventData)
     Debug:Log("GroupMenuManager:OnCommand, group name is " .. _eventData.groupName .. ", command name is " .. _eventData.commandName)
+    for i, v in ipairs(self.commandListeners) do
+        v:OnCommand(_eventData)
+    end
 end
-

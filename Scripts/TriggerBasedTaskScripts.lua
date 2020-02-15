@@ -13,7 +13,9 @@ TaskConfig =
     badEndMsgFriendly = "This is bad end message for friendly",
     badEndMsgEnemy = "This is bad end message for enemy",
     cancelEndMsgFriendly = "This is cancel message for friendly",
-    cancelEndMsgEnemy = "This is cancel message for enemy"
+    cancelEndMsgEnemy = "This is cancel message for enemy",
+    briefMsgFriendly = "This is brief message for friendly",
+    briefMsgEnemy = "This is brief message for enemy"
 }
 
 ------------------------------------------------------------------------------------------------------
@@ -45,7 +47,7 @@ function TaskContoller:StartTask()
     local startUserFlag = USERFLAG:New(self.taskConfig.startTrigger)
     startUserFlag:Set(1)
 
-    self:MessageToTaskCoalition(self.taskConfig.startMsgFriendly, MESSAGE_TIME_ON_SCREEN)
+    self:MessageToFriendlyCoalition(self.taskConfig.startMsgFriendly, MESSAGE_TIME_ON_SCREEN)
     self:MessageToEnemyCoalition(self.taskConfig.startMsgEnemy, MESSAGE_TIME_ON_SCREEN)
 
 
@@ -59,6 +61,8 @@ function TaskContoller:StartTask()
     cancelEndEvent:AddListener(self, "OnCancelEndTrigger")
 
     Debug:Log("StartTask end successfully, task name is " .. self.taskConfig.name)
+
+    return true
 end
 
 function TaskContoller:AddOnEndEventListener(object)
@@ -79,7 +83,7 @@ function TaskContoller:OnGoodEndTrigger()
 
     Debug:Log("OnGoodEndTrigger called, task name is " .. self.taskConfig.name)
     self.taskState = 2
-    self:MessageToTaskCoalition(self.taskConfig.goodEndMsgFriendly, MESSAGE_TIME_ON_SCREEN)
+    self:MessageToFriendlyCoalition(self.taskConfig.goodEndMsgFriendly, MESSAGE_TIME_ON_SCREEN)
     self:MessageToEnemyCoalition(self.taskConfig.goodEndMsgEnemy, MESSAGE_TIME_ON_SCREEN)
     self:EndTask()
 end
@@ -92,7 +96,7 @@ function TaskContoller:OnBadEndTrigger()
 
     Debug:Log("OnBadEndTrigger called, task name is " .. self.taskConfig.name)
     self.taskState = 3
-    self:MessageToTaskCoalition(self.taskConfig.badEndMsgFriendly, MESSAGE_TIME_ON_SCREEN)
+    self:MessageToFriendlyCoalition(self.taskConfig.badEndMsgFriendly, MESSAGE_TIME_ON_SCREEN)
     self:MessageToEnemyCoalition(self.taskConfig.badEndMsgEnemy, MESSAGE_TIME_ON_SCREEN)
     self:EndTask()
 end
@@ -105,12 +109,12 @@ function TaskContoller:OnCancelEndTrigger()
 
     Debug:Log("OnCancelEndTrigger called, task name is " .. self.taskConfig.name)
     self.taskState = 4
-    self:MessageToTaskCoalition(self.taskConfig.cancelEndMsgFriendly, MESSAGE_TIME_ON_SCREEN)
+    self:MessageToFriendlyCoalition(self.taskConfig.cancelEndMsgFriendly, MESSAGE_TIME_ON_SCREEN)
     self:MessageToEnemyCoalition(self.taskConfig.cancelEndMsgEnemy, MESSAGE_TIME_ON_SCREEN)
     self:EndTask()
 end
 
-function TaskContoller:MessageToTaskCoalition(text, duration)
+function TaskContoller:MessageToFriendlyCoalition(text, duration)
     if text ~= "" then
         local newMsg = MESSAGE:New(text, duration):ToCoalition(self.taskConfig.coalition)
     end
@@ -134,6 +138,17 @@ function TaskContoller:MessageToGroup(groupName, text, duration)
 
     if msgGroup ~= nil then
         local newMsg = MESSAGE:New(text, duration):ToGroup(msgGroup)
+    end
+end
+
+function TaskContoller:BriefMessageToGroup(groupName, duration)
+    local msgGroup = GROUP:FindByName( groupName )
+    local groupCoal = msgGroup:GetCoalition()
+
+    if self.taskConfig.coalition == groupCoal then 
+        self:MessageToGroup( groupName, self.taskConfig.briefMsgFriendly, duration )
+    else
+        self:MessageToGroup( groupName, self.taskConfig.briefMsgEnemy, duration )
     end
 end
 
