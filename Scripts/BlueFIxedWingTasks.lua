@@ -1,6 +1,4 @@
-blueFixedWingTasksConfig = 
-{
-    {
+blue01 = {
     name = "blue01",
     coalition = 2,
     startTrigger = "20101",
@@ -17,8 +15,9 @@ blueFixedWingTasksConfig =
     cancelEndMsgEnemy = "This is cancel message for enemy blue01",
     briefMsgFriendly = "This is brief message for friendly blue01",
     briefMsgEnemy = "This is brief message for enemy blue01"
-    },
-    {
+    }
+
+blue02 = {
     name = "blue02",
     coalition = 2,
     startTrigger = "20201",
@@ -35,8 +34,9 @@ blueFixedWingTasksConfig =
     cancelEndMsgEnemy = "This is cancel message for enemy blue02",
     briefMsgFriendly = "This is brief message for friendly blue02",
     briefMsgEnemy = "This is brief message for enemy blue02"
-    },
-    {
+    }
+
+blue03 = {
     name = "blue03",
     coalition = 2,
     startTrigger = "20301",
@@ -54,4 +54,13 @@ blueFixedWingTasksConfig =
     briefMsgFriendly = "This is brief message for friendly blue03",
     briefMsgEnemy = "This is brief message for enemy blue03"
     }
+
+-------------------------------------------------------------------------------------------------------
+blueFixedWingTasksConfig = 
+{
+
 }
+
+table.insert( blueFixedWingTasksConfig, blue01 )
+table.insert( blueFixedWingTasksConfig, blue02 )
+table.insert( blueFixedWingTasksConfig, blue03 )
