@@ -13,6 +13,11 @@ function TaskManager:New(_managerName)
 end
 
 function TaskManager:StartTasking()
+    if #self._nextTaskConfigsList <= 0 then 
+        Debug:Log("TaskManager: no tasks are found, task manager name is " .. self._managerName)
+        return
+    end
+
     Debug:Log("TaskManager:StartTasking, starting tasking")
     local randomTaskConfig = self:GetRandomTask(self._nextTaskConfigsList)
     local taskToStart = TaskContoller:New(randomTaskConfig)
