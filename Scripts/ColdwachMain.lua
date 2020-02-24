@@ -7,7 +7,7 @@ BlueFixedWingTaskManager = TaskManager:New("Blue task manager")
 BlueFixedWingTaskManager:SetMissions(blueFixedWingTasksConfig)
 BlueFixedWingTaskManager:StartTasking()
 
-FixedWingBriefTaskReportManager = TaskReportManager:New(BlueFixedWingTaskManager, "Show current task", 15)
+FixedWingBriefTaskReportManager = TaskReportManager:New(BlueFixedWingTaskManager, "Show current task", 45)
 
 FixedWingGroupMenuManager:AddListener(FixedWingBriefTaskReportManager)
 

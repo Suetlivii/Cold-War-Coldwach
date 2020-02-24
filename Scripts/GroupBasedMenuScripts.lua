@@ -54,34 +54,46 @@ end
 
 ------------------------------------------------------------------------------------------------------
 
-GroupMenuManager = {}
+GroupMenuManager = {
+    commandListeners = {},
+    menuCommandControllers = {},
+    _sheduler = nil,
+    alreadyInitializedGroups = {},
+    _prefix = nil,
+    _menuCommandParent = nil,
+    _menuCommandName = nil,
+    _isInit = false
+}
 
 function GroupMenuManager:New()
-    newObj = 
-    {
-        commandListeners = {},
-        menuCommandControllers = {},
-        _sheduler = nil,
-        alreadyInitializedGroups = {}
-    }
-    self.__index = self
-    return setmetatable(newObj, self)
+    local self = BASE:Inherit( self, BASE:New() ) -- #DATABASE
+
+    self:SetEventPriority( 1 )
+    
+    self:HandleEvent( EVENTS.Birth, self._EventOnBirth )
+
+    return self
 end
 
-function GroupMenuManager:AddMenuCommandForGroupsWithPrefix(_prefix, _menuCommandParent, _menuCommandName)
-    self:InitCommands(_prefix, _menuCommandParent, _menuCommandName)
-
-    local PlayerEnterUnitEvent = EVENTHANDLER:New()
-    PlayerEnterUnitEvent:HandleEvent(EVENTS.Birth)
-
-
-    local thisObj = self
-    function PlayerEnterUnitEvent:OnEventBirth(EventData)
-        thisObj:InitCommands(_prefix, _menuCommandParent, _menuCommandName)
+function GroupMenuManager:OnEventBirth(EventData)
+    if self._isInit == true then 
+        self:InitCommands()
     end
 end
 
-function GroupMenuManager:InitCommands(_prefix, _menuCommandParent, _menuCommandName)
+function GroupMenuManager:AddMenuCommandForGroupsWithPrefix(_prefix, _menuCommandParent, _menuCommandName)
+    self._prefix = _prefix
+    self._menuCommandParent = _menuCommandParent
+    self._menuCommandName = _menuCommandName
+    self._isInit = true
+end
+
+function GroupMenuManager:InitCommands()
+
+    _prefix = self._prefix
+    _menuCommandParent = self._menuCommandParent
+    _menuCommandName = self._menuCommandName
+
     local setGroup = SET_GROUP:New()
     setGroup:FilterPrefixes( { _prefix } )
     setGroup:FilterStart()

@@ -26,7 +26,7 @@ TaskConfig =
 -- 3 - badEnd
 -- 4 - canceled
 
-MESSAGE_TIME_ON_SCREEN = 5
+MESSAGE_TIME_ON_SCREEN = 45
 
 TaskContoller = {}
 

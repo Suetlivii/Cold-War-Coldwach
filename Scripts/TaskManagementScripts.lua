@@ -113,7 +113,8 @@ end
 
 function TaskReportManager:OnCommand(eventData)
     if eventData.commandName == self._briefCommandName then 
-        if self._taskManager._currentTask ~= nil then 
+        if self._taskManager._currentTask ~= nil then
+            Debug:Log("TaskReportManager:OnCommand: sending message to group named " .. eventData.groupName) 
             self._taskManager._currentTask:BriefMessageToGroup(eventData.groupName, self._textDuration)
         end
     end

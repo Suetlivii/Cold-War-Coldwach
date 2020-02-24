@@ -1,31 +1,33 @@
-GroupRandomizer = {}
-
-function GroupRandomizer:New()
-    newObj = 
-    {
+GroupRandomizer = {
         _percentKillWord = nil,
         _unitCountKillWord = nil,
         eventHandler = nil,
-        _alreadyFoundGroupsNames = {}
-    }
-    self.__index = self
-    return setmetatable(newObj, self)
+        _alreadyFoundGroupsNames = {},
+        _isInit = false
+}
+
+function GroupRandomizer:New()
+    local self = BASE:Inherit( self, BASE:New() ) -- #DATABASE
+
+    self:SetEventPriority( 1 )
+    
+    self:HandleEvent( EVENTS.Birth, self._EventOnBirth )
+
+    return self
 end
 
 function GroupRandomizer:Start(_percentKillWord, _unitCountKillWord)
     self._percentKillWord = _percentKillWord
     self._unitCountKillWord = _unitCountKillWord
-
-    local OnBirthHandler = EVENTHANDLER:New()
-    OnBirthHandler:HandleEvent(EVENTS.Birth)
-
-
-    local thisObj = self
-    function OnBirthHandler:OnEventBirth(EventData)
-        thisObj:OnBirth(EventData)
-    end
+    self._isInit = true
 
     Debug:Log("GroupRandomizer:Start started")
+end
+
+function GroupRandomizer:OnEventBirth(EventData)
+    if self._isInit == true then
+        self:OnBirth(EventData)
+    end
 end
 
 function GroupRandomizer:OnBirth(EventData)
