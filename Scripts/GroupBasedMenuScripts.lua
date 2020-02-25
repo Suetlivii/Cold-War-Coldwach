@@ -68,8 +68,6 @@ GroupMenuManager = {
 function GroupMenuManager:New()
     local self = BASE:Inherit( self, BASE:New() ) -- #DATABASE
 
-    self:SetEventPriority( 1 )
-    
     self:HandleEvent( EVENTS.Birth, self._EventOnBirth )
 
     return self

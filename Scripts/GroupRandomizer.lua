@@ -9,8 +9,6 @@ GroupRandomizer = {
 function GroupRandomizer:New()
     local self = BASE:Inherit( self, BASE:New() ) -- #DATABASE
 
-    self:SetEventPriority( 1 )
-    
     self:HandleEvent( EVENTS.Birth, self._EventOnBirth )
 
     return self
@@ -93,7 +91,7 @@ function GroupRandomizer:KillUnits(_groupName, _unitsCount)
     end
     table.insert( self._alreadyFoundGroupsNames, groupName )
     self._alreadyFoundGroupsNames[groupName] = true
-    Debug:Log("GroupRandomizer:Kill count is started for " .. groupName .. " count is " .. _unitsCount )
+    Debug:Log("GroupRandomizer:Kill count is started for " .. groupName .. " alive units count is " .. _unitsCount )
 
     local unitsList = group:GetUnits()
 
@@ -122,3 +120,4 @@ function GroupRandomizer:KillUnits(_groupName, _unitsCount)
         end
     end
 end
+

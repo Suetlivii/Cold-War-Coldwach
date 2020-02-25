@@ -136,8 +136,8 @@ end
 function TaskContoller:MessageToGroup(groupName, text, duration)
     local msgGroup = GROUP:FindByName( groupName )
 
-    if msgGroup ~= nil then
-        local newMsg = MESSAGE:New(text, duration):ToGroup(msgGroup)
+    if msgGroup ~= nil and text ~= "" then
+        local newMsg = MESSAGE:New(text, duration, nil, true):ToGroup(msgGroup)
     end
 end
 
