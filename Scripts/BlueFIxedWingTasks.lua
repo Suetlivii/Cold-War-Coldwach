@@ -12,15 +12,27 @@ blue01_task =
     goodEndTrigger = "20102",
     badEndTrigeer = "20103",
     cancelTrigger = "20104",
-    startMsgFriendly = "NAME: “Hot Key” Deep Strike\n\nOBJECTIVE: Destroy the enemy supply base in square EK14. Base is placed at train station, to the north from Goryachiy Klyuch town.\n\nTHREATS: 23mm anti-air artillery, infantry firearms.\n\nNAVIGATION: Follow the railroad from the Tuapse city.",
+    startMsgFriendly = [[NAME: “Hot Key” Deep Strike
+
+OBJECTIVE: Destroy the enemy supply base in square EK14. Base is placed near the train station, to the north from Goryachiy Klyuch town. Destroy supply trucks and rocket artillery launchers.
+
+THREATS: Heavy machineguns, 23-mm AAA, possible ZSU-23-4.
+
+NAVIGATION: Follow the railroad from the Tuapse city.]],
     startMsgEnemy = "",
-    goodEndMsgFriendly = '"Hot Key" Deep Strike accomplished, good job!',
+    goodEndMsgFriendly = '"Hot Key" Deep Strike task accomplished, good job!',
     goodEndMsgEnemy = "",
     badEndMsgFriendly = "",
     badEndMsgEnemy = "",
     cancelEndMsgFriendly = "",
     cancelEndMsgEnemy = "",
-    briefMsgFriendly = "NAME: “Hot Key” Deep Strike\n\nOBJECTIVE: Destroy the enemy supply base in square EK14. Base is placed at train station, to the north from Goryachiy Klyuch town.\n\nTHREATS: 23mm anti-air artillery, infantry firearms.\n\nNAVIGATION: Follow the railroad from the Tuapse city.",
+    briefMsgFriendly = [[NAME: “Hot Key” Deep Strike
+
+OBJECTIVE: Destroy the enemy supply base in square EK14. Base is placed near the train station, to the north from Goryachiy Klyuch town. Destroy supply trucks and rocket artillery launchers.
+
+THREATS: Heavy machineguns, 23-mm AAA, possible ZSU-23-4.
+
+NAVIGATION: Follow the railroad from the Tuapse city.]],
     briefMsgEnemy = ""
 }
 

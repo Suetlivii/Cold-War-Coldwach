@@ -18,4 +18,5 @@ FixedWingGroupMenuManager:AddListener(BlueFixedWingBriefTaskReportManager)
 FixedWingGroupMenuManager:AddListener(RedFixedWingBriefTaskReportManager)
 
 mainGroupRandomizer = GroupRandomizer:New()
-mainGroupRandomizer:Start("perkill", "cntkill")
+mainGroupRandomizer:SetKeyWords("perkill", "cntkill")
+mainGroupRandomizer:RandomizeOnce(false)

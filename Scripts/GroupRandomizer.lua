@@ -3,27 +3,41 @@ GroupRandomizer = {
         _unitCountKillWord = nil,
         eventHandler = nil,
         _alreadyFoundGroupsNames = {},
-        _isInit = false
+        _isInit = false,
+        _isStarted = false
 }
 
 function GroupRandomizer:New()
     local self = BASE:Inherit( self, BASE:New() ) -- #DATABASE
-
-    self:HandleEvent( EVENTS.Birth, self._EventOnBirth )
-
     return self
 end
 
-function GroupRandomizer:Start(_percentKillWord, _unitCountKillWord)
+function GroupRandomizer:SetKeyWords(_percentKillWord, _unitCountKillWord)
     self._percentKillWord = _percentKillWord
     self._unitCountKillWord = _unitCountKillWord
     self._isInit = true
+end
 
+function GroupRandomizer:RandomizeOnce(_isActiveOnly)
+    local groupsSet = SET_GROUP:New():FilterActive(_isActiveOnly):FilterOnce()
+    local groupSetNames = groupsSet:GetSetNames()
+
+    for k, v in pairs(groupSetNames) do 
+        local eventData = {}
+        eventData['IniDCSGroupName'] = v
+        Debug:Log("GroupRandomizer:RandomizeOnce: trying to randomize group with name " .. eventData.IniDCSGroupName)
+        self:OnBirth(eventData)
+    end
+end
+
+function GroupRandomizer:Start()
+    self:HandleEvent( EVENTS.Birth, self._EventOnBirth )
+    self._isStarted = true
     Debug:Log("GroupRandomizer:Start started")
 end
 
 function GroupRandomizer:OnEventBirth(EventData)
-    if self._isInit == true then
+    if self._isInit == true and self._isStarted == true then
         self:OnBirth(EventData)
     end
 end
