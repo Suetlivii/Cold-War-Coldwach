@@ -5,7 +5,7 @@ redFixedWingTasksConfig =
 
 red01_task = 
 {
-    name = 'Red strike task',
+    name = 'Kurinskaya Deep Strike',
     coalition = 1,
     startTrigger = "10101",
     goodEndTrigger = "10102",
@@ -32,7 +32,9 @@ OBJECTIVE: Destroy enemy forces in square EK31, near the train station. Your tar
 THREATS: Heavy machineguns, 23-mm AAA, possible ZSU-23-4, MANPADS
 
 NAVIGATION: Use railroad for navigation reference. Use Krasnodar-Center RSBN (Channel 3) 150 / 85km or Krymsk (Channel 2) 115 / 128km]],
-    briefMsgEnemy = ""
+    briefMsgEnemy = "",
+    markZoneName = "r01zone",
+    markText = 'Kurinskaya Deep Strike Target'
 }
 
 table.insert(redFixedWingTasksConfig, red01_task)

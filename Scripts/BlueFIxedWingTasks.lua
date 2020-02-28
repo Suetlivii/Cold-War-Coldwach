@@ -33,7 +33,9 @@ OBJECTIVE: Destroy the enemy supply base in square EK14. Base is placed near the
 THREATS: Heavy machineguns, 23-mm AAA, possible ZSU-23-4.
 
 NAVIGATION: Follow the railroad from the Tuapse city.]],
-    briefMsgEnemy = ""
+    briefMsgEnemy = "",
+    markZoneName = "b01zone",
+    markText = '"Hot Key" Deep Strike Target'
 }
 
 table.insert(blueFixedWingTasksConfig, blue01_task)

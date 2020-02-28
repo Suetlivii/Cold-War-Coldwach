@@ -15,7 +15,9 @@ TaskConfig =
     cancelEndMsgFriendly = "This is cancel message for friendly",
     cancelEndMsgEnemy = "This is cancel message for enemy",
     briefMsgFriendly = "This is brief message for friendly",
-    briefMsgEnemy = "This is brief message for enemy"
+    briefMsgEnemy = "This is brief message for enemy",
+    markZoneName = "",
+    markText = ""
 }
 
 ------------------------------------------------------------------------------------------------------
@@ -34,6 +36,7 @@ function TaskContoller:New(_taskConfig)
     newObj = 
     {
         taskConfig = _taskConfig,
+        markID = nil,
         onEndListeners = {},
         taskState = 0
     }
@@ -61,6 +64,7 @@ function TaskContoller:StartTask()
     cancelEndEvent:AddListener(self, "OnCancelEndTrigger")
 
     Debug:Log("StartTask end successfully, task name is " .. self.taskConfig.name)
+    self:CreateMark()
 
     return true
 end
@@ -70,6 +74,7 @@ function TaskContoller:AddOnEndEventListener(object)
 end
 
 function TaskContoller:EndTask()
+    self:DestroyMark()
     for i, v in ipairs(self.onEndListeners) do
         v:OnTaskEnd(self.taskConfig, self.taskState)
     end
@@ -117,6 +122,29 @@ end
 function TaskContoller:MessageToFriendlyCoalition(text, duration)
     if text ~= "" then
         local newMsg = MESSAGE:New(text, duration):ToCoalition(self.taskConfig.coalition)
+    end
+end
+
+function TaskContoller:CreateMark()
+    if self.taskConfig.markZoneName == nil or self.taskConfig.markZoneName == "" then 
+        Debug:Log("TaskContoller:CreateMark markZoneName is nill or empty, task name is " .. self.taskConfig.name)
+        return nil
+    end
+
+    if self.taskConfig.markText == nil or self.taskConfig.markText == "" then 
+        Debug:Log("TaskContoller:CreateMark markText is nill or empty, task name is " .. self.taskConfig.name)
+        return nil
+    end
+
+    local markZoneVec2 = ZONE:FindByName(self.taskConfig.markZoneName):GetVec2()
+    local markZoneCoord = COORDINATE:NewFromVec2(markZoneVec2)
+    local markID = markZoneCoord:MarkToCoalition(self.taskConfig.markText, self.taskConfig.coalition, true)
+    self.markID = markID
+end
+
+function TaskContoller:DestroyMark()
+    if self.markID ~= nil then 
+        COORDINATE:RemoveMark(self.markID)
     end
 end
 
