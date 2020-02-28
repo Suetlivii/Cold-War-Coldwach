@@ -1,8 +1,5 @@
-redFixedWingTasksConfig = 
-{
-
-}
-
+redFixedWingTasksConfig = {}
+-------------------------------------------------------------------------------------------------------
 red01_task = 
 {
     name = 'Kurinskaya Deep Strike',
@@ -36,5 +33,40 @@ NAVIGATION: Use railroad for navigation reference. Use Krasnodar-Center RSBN (Ch
     markZoneName = "r01zone",
     markText = 'Kurinskaya Deep Strike Target'
 }
+-------------------------------------------------------------------------------------------------------
+red02_task = 
+{
+    name = 'Worm Catcher',
+    coalition = 1,
+    startTrigger = "10201",
+    goodEndTrigger = "10202",
+    badEndTrigeer = "10203",
+    cancelTrigger = "10204",
+    startMsgFriendly = [[NAME: “Worm Catcher” 
+
+OBJECTIVE: Destroy 3 missile launchers, type is SS-N-2 Silkworm. They are placed on the coast, square EJ17, near the Makopse town.
+
+THREATS: 23-mm AAA, Shilkas, MANPADS, machineguns. Be advised of enemy SA-3 site in square EJ35.
+
+NAVIGATION: Follow the coastline, look for the bridge.]],
+    startMsgEnemy = "",
+    goodEndMsgFriendly = '“Worm Catcher” anti-ship missiles launchers destroyed, mission completed!',
+    goodEndMsgEnemy = "",
+    badEndMsgFriendly = "",
+    badEndMsgEnemy = "",
+    cancelEndMsgFriendly = "",
+    cancelEndMsgEnemy = "",
+    briefMsgFriendly = [[NAME: “Worm Catcher” 
+
+OBJECTIVE: Destroy 3 missile launchers, type is SS-N-2 Silkworm. They are placed on the coast, square EJ17, near the Makopse town.
+
+THREATS: 23-mm AAA, Shilkas, MANPADS, machineguns. Be advised of enemy SA-3 site in square EJ35.
+
+NAVIGATION: Follow the coastline, look for the bridge.]],
+    briefMsgEnemy = "",
+    markZoneName = "r02zone",
+    markText = '“Worm Catcher” target'
+}
 
 table.insert(redFixedWingTasksConfig, red01_task)
+table.insert(redFixedWingTasksConfig, red02_task)
