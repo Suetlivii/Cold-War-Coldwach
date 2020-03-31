@@ -45,7 +45,7 @@ blue02_task =
     cancelTrigger = "20204",
     startMsgFriendly = [[NAME: “Sea chase”
 
-OBJECTIVE: Find and destroy soviet cargo ship. Ship is trying to escape from Tuapse and heading to the Novorossiysk. Ship will pass through squares DK50, DK40, DK31, DK22.
+OBJECTIVE: Find and destroy soviet cargo ship. Ship is heavily damaged and it’s unable to move. You can spot the smoke in square DK41, that’s the target. 
 
 THREATS: Possible soviet air force, be advised of SA-3 sam sites in square DK70 and DK80.
 
@@ -59,7 +59,7 @@ NAVIGATION: Follow the coast line.]],
     cancelEndMsgEnemy = "",
     briefMsgFriendly = [[NAME: “Sea chase”
 
-OBJECTIVE: Find and destroy soviet cargo ship. Ship is trying to escape from Tuapse and heading to the Novorossiysk. Ship will pass through squares DK50, DK40, DK31, DK22.
+OBJECTIVE: Find and destroy soviet cargo ship. Ship is heavily damaged and it’s unable to move. You can spot the smoke in square DK41, that’s the target. 
 
 THREATS: Possible soviet air force, be advised of SA-3 sam sites in square DK70 and DK80.
 
