@@ -6,7 +6,7 @@ FixedWingGroupMenuManager = GroupMenuManager:New()
 FixedWingGroupMenuManager:AddMenuCommandForGroupsWithPrefix("FW", nil, "Show current task")
 --For rotary wing (RW) aircraft
 RotaryWingGroupMenuManager = GroupMenuManager:New()
-RotaryWingGroupMenuManager:AddMenuCommandForGroupsWithPrefix("RW", nil, "Show current heli task")
+RotaryWingGroupMenuManager:AddMenuCommandForGroupsWithPrefix("RW", nil, "Show current task")
 
 
 --Adding task managers -----------------------------------------------------------------------------------

@@ -174,9 +174,17 @@ function TaskContoller:BriefMessageToGroup(groupName, duration)
     local groupCoal = msgGroup:GetCoalition()
 
     if self.taskConfig.coalition == groupCoal then 
-        self:MessageToGroup( groupName, self.taskConfig.briefMsgFriendly, duration )
+        if self.taskConfig.briefMsgFriendly == nil then 
+            self:MessageToGroup( groupName, self.taskConfig.startMsgFriendly, duration )
+        else
+            self:MessageToGroup( groupName, self.taskConfig.briefMsgFriendly, duration )
+        end
     else
-        self:MessageToGroup( groupName, self.taskConfig.briefMsgEnemy, duration )
+        if self.taskConfig.briefMsgEnemy == nil then 
+            self:MessageToGroup( groupName, self.taskConfig.startMsgEnemy, duration )
+        else
+            self:MessageToGroup( groupName, self.taskConfig.briefMsgEnemy, duration )
+        end
     end
 end
 

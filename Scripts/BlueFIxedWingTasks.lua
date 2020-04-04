@@ -9,7 +9,7 @@ blue01_task =
     goodEndTrigger = "20102",
     badEndTrigeer = "20103",
     cancelTrigger = "20104",
-    startMsgFriendly = [[NAME: “Hot Key”
+    startMsgFriendly = [[NAME: "Hot Key"
 
 OBJECTIVE: Destroy the enemy supply base in square EK14. Base is placed near the train station, to the north from Goryachiy Klyuch town. Destroy supply trucks and rocket artillery launchers.
 
@@ -23,13 +23,7 @@ NAVIGATION: Follow the railroad from the Tuapse city.]],
     badEndMsgEnemy = "",
     cancelEndMsgFriendly = "",
     cancelEndMsgEnemy = "",
-    briefMsgFriendly = [[NAME: “Hot Key”
-
-OBJECTIVE: Destroy the enemy supply base in square EK14. Base is placed near the train station, to the north from Goryachiy Klyuch town. Destroy supply trucks and rocket artillery launchers.
-
-THREATS: Heavy machineguns, 23-mm AAA, possible ZSU-23-4.
-
-NAVIGATION: Follow the railroad from the Tuapse city.]],
+    briefMsgFriendly = nil,
     briefMsgEnemy = "",
     markZoneName = "b01zone",
     markText = '"Hot Key" Deep Strike Target'
@@ -43,7 +37,7 @@ blue02_task =
     goodEndTrigger = "20202",
     badEndTrigeer = "20203",
     cancelTrigger = "20204",
-    startMsgFriendly = [[NAME: “Sea chase”
+    startMsgFriendly = [[NAME: "Sea chase"
 
 OBJECTIVE: Find and destroy soviet cargo ship. Ship is heavily damaged and it’s unable to move. You can spot the smoke in square DK41, that’s the target. 
 
@@ -51,22 +45,16 @@ THREATS: Possible soviet air force, be advised of SA-3 sam sites in square DK70 
 
 NAVIGATION: Follow the coast line.]],
     startMsgEnemy = "",
-    goodEndMsgFriendly = '“Sea chase” task completed, ship destroyed.',
+    goodEndMsgFriendly = '"Sea chase" task completed, ship destroyed.',
     goodEndMsgEnemy = "",
-    badEndMsgFriendly = '“Sea chase” task failed, ship escaped.',
+    badEndMsgFriendly = '"Sea chase" task failed, ship escaped.',
     badEndMsgEnemy = "",
     cancelEndMsgFriendly = "",
     cancelEndMsgEnemy = "",
-    briefMsgFriendly = [[NAME: “Sea chase”
-
-OBJECTIVE: Find and destroy soviet cargo ship. Ship is heavily damaged and it’s unable to move. You can spot the smoke in square DK41, that’s the target. 
-
-THREATS: Possible soviet air force, be advised of SA-3 sam sites in square DK70 and DK80.
-
-NAVIGATION: Follow the coast line.]],
+    briefMsgFriendly = nil,
     briefMsgEnemy = "",
     markZoneName = "b02zone",
-    markText = '“Sea chase” possible ship position'
+    markText = '"Sea chase" possible ship position'
 }
 
 
