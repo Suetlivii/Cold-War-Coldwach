@@ -60,5 +60,5 @@ NAVIGATION: Fly heading 032 from Warsaw FARP, look for the Dagestanskaya town.]]
 
 
 
-table.insert(blueRotaryWingTasksConfig, rblue01_task)
+--table.insert(blueRotaryWingTasksConfig, rblue01_task)
 table.insert(blueRotaryWingTasksConfig, rblue02_task)
