@@ -12,7 +12,7 @@ if ME_isBlueCap == true then
 
     BlueA2ADispatcher:SetEngageRadius( 50000 )
     --BlueA2ADispatcher:SetGciRadius( 150000 )
-    BlueA2ADispatcher:SetDisengageRadius(200000)
+    BlueA2ADispatcher:SetDisengageRadius(240000)
     BlueA2ADispatcher:SetTacticalDisplay( ME_isDebugMode )
 
     --https://flightcontrol-master.github.io/MOOSE_DOCS/Documentation/Wrapper.Airbase.html
@@ -44,7 +44,7 @@ if ME_isRedCap == true then
 
     RedA2ADispatcher:SetEngageRadius( 50000 )
     --RedA2ADispatcher:SetGciRadius( 150000 )
-    RedA2ADispatcher:SetDisengageRadius(200000)
+    RedA2ADispatcher:SetDisengageRadius(240000)
     RedA2ADispatcher:SetTacticalDisplay( ME_isDebugMode )
 
     --https://flightcontrol-master.github.io/MOOSE_DOCS/Documentation/Wrapper.Airbase.html

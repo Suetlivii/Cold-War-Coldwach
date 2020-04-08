@@ -3,7 +3,7 @@ blueFixedWingTasksConfig = {}
 -------------------------------------------------------------------------------------------------------
 blue01_task = 
 {
-    name = 'Hot Key',
+    name = 'b01',
     coalition = 2,
     startTrigger = "20101",
     goodEndTrigger = "20102",
@@ -31,7 +31,7 @@ NAVIGATION: Follow the railroad from the Tuapse city.]],
 -------------------------------------------------------------------------------------------------------
 blue02_task = 
 {
-    name = 'Sea chase',
+    name = 'b02',
     coalition = 2,
     startTrigger = "20201",
     goodEndTrigger = "20202",
@@ -56,7 +56,35 @@ NAVIGATION: Follow the coast line.]],
     markZoneName = "b02zone",
     markText = '"Sea chase" possible ship position'
 }
+-------------------------------------------------------------------------------------------------------
+blue03_task = 
+{
+    name = 'b03',
+    coalition = 2,
+    startTrigger = "20301",
+    goodEndTrigger = "20302",
+    badEndTrigeer = "20303",
+    cancelTrigger = "20304",
+    startMsgFriendly = [[NAME: "Fast response"
 
+OBJECTIVE: Our column was ambushed in square EK32, near the Stantsiony town. Find them and support, they will use green smoke to mark themselves. Also they reported a mortar strike - find the mortars and destroy them.  
+
+THREATS: Possible soviet air force, 23-mm artillery, infantry.
+
+NAVIGATION: Use railroad as reference.]],
+    startMsgEnemy = "",
+    goodEndMsgFriendly = '"Fast response" task completed.',
+    goodEndMsgEnemy = "",
+    badEndMsgFriendly = '"Fast response" task failed.',
+    badEndMsgEnemy = "",
+    cancelEndMsgFriendly = "",
+    cancelEndMsgEnemy = "",
+    briefMsgFriendly = nil,
+    briefMsgEnemy = "",
+    markZoneName = "b03zone",
+    markText = '"Fast response" ambush position'
+}
 
 table.insert(blueFixedWingTasksConfig, blue01_task)
 table.insert(blueFixedWingTasksConfig, blue02_task)
+table.insert(blueFixedWingTasksConfig, blue03_task)

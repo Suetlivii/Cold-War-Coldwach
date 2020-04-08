@@ -6,7 +6,8 @@ function TaskManager:New(_managerName)
         _managerName = _managerName,
         _taskConfigsList = nil,
         _nextTaskConfigsList = nil,
-        _currentTask = nil
+        _currentTask = nil,
+        _firstTaskName = nil
     }
     self.__index = self
     return setmetatable(newObj, self)
@@ -21,6 +22,14 @@ function TaskManager:StartTasking()
     Debug:Log("TaskManager:StartTasking, starting tasking")
     local randomTaskConfig = self:GetRandomTask(self._nextTaskConfigsList)
     local taskToStart = TaskContoller:New(randomTaskConfig)
+
+    if self._firstTaskName ~= nil then 
+        local firstTaskConfig = self:FindTask(self._firstTaskName, self._nextTaskConfigsList)
+        if firstTaskConfig ~= nil then 
+            taskToStart = TaskContoller:New(firstTaskConfig)
+            self._firstTaskName = nil
+        end
+    end
 
     if taskToStart ~= nil then
         Debug:Log("TaskManager:StartTasking, starting task with name " .. taskToStart.taskConfig.name)
@@ -63,12 +72,19 @@ function TaskManager:FindTask(_taskName, _list)
             return _list[k]
         end
     end
+    return nil
 end
 
 function TaskManager:SetMissions(_taskConfigsList)
     Debug:Log("TaskManager:SetMissions: setting tasks, count is " .. #_taskConfigsList)
     self._taskConfigsList = _taskConfigsList
     self._nextTaskConfigsList = self:DeepCopyTable(_taskConfigsList)
+end
+
+function TaskManager:SetFirstTask(_taskName)
+    if _taskName ~= nil and _taskName ~= "" then 
+        self._firstTaskName = _taskName
+    end
 end
 
 function TaskManager:OnTaskEnd(_taskConfig, _taskState)

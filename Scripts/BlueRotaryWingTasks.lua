@@ -3,7 +3,7 @@ blueRotaryWingTasksConfig = {}
 -------------------------------------------------------------------------------------------------------
 rblue01_task = 
 {
-    name = "Apsheronsk insertion",
+    name = "rb01",
     coalition = 2,
     startTrigger = "40101",
     goodEndTrigger = "40102",
@@ -31,7 +31,7 @@ NAVIGATION: Fly heading 356 from Warsaw FARP, look for the powerlines.]],
 -------------------------------------------------------------------------------------------------------
 rblue02_task = 
 {
-    name = "Intercepting recovery",
+    name = "rb02",
     coalition = 2,
     startTrigger = "40201",
     goodEndTrigger = "40202",

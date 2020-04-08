@@ -3,7 +3,7 @@ redFixedWingTasksConfig = {}
 -------------------------------------------------------------------------------------------------------
 red01_task = 
 {
-    name = "Kurinskaya Deep Strike",
+    name = 'r01',
     coalition = 1,
     startTrigger = "10101",
     goodEndTrigger = "10102",
@@ -31,7 +31,7 @@ NAVIGATION: Use railroad for navigation reference. Use Krasnodar-Center RSBN (Ch
 -------------------------------------------------------------------------------------------------------
 red02_task = 
 {
-    name = 'Worm Catcher',
+    name = 'r02',
     coalition = 1,
     startTrigger = "10201",
     goodEndTrigger = "10202",
