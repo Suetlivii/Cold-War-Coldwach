@@ -84,7 +84,65 @@ NAVIGATION: Use railroad as reference.]],
     markZoneName = "b03zone",
     markText = '"Fast response" ambush position'
 }
+-------------------------------------------------------------------------------------------------------
+blue04_task = 
+{
+    name = 'b04',
+    coalition = 2,
+    startTrigger = "20401",
+    goodEndTrigger = "20402",
+    badEndTrigeer = "20403",
+    cancelTrigger = "20404",
+    startMsgFriendly = [[NAME: "Supply destruction"
+
+OBJECTIVE: Destroy soviet supply base placed in square DK82, near the Defanovka town. Targets are trucks and other infrastructure.  
+
+THREATS: Possible soviet fighters, 23-mm artillery, manpads.
+
+NAVIGATION: Use road from Dzhubga town (square DK70).]],
+    startMsgEnemy = "",
+    goodEndMsgFriendly = '"Supply destruction" task completed.',
+    goodEndMsgEnemy = "",
+    badEndMsgFriendly = '"Supply destruction" task failed.',
+    badEndMsgEnemy = "",
+    cancelEndMsgFriendly = "",
+    cancelEndMsgEnemy = "",
+    briefMsgFriendly = nil,
+    briefMsgEnemy = "",
+    markZoneName = "b04zone",
+    markText = '"Supply destruction" target'
+}
+-------------------------------------------------------------------------------------------------------
+blue05_task = 
+{
+    name = 'b05',
+    coalition = 2,
+    startTrigger = "20501",
+    goodEndTrigger = "20502",
+    badEndTrigeer = "20503",
+    cancelTrigger = "20504",
+    startMsgFriendly = [[NAME: "Power off"
+
+OBJECTIVE: Destroy important electrical substation in square EK35.   
+
+THREATS: Possible soviet fighters, 23-mm artillery, manpads and SA-8.
+
+NAVIGATION: Use powerlines.]],
+    startMsgEnemy = "",
+    goodEndMsgFriendly = '"Power off" task completed.',
+    goodEndMsgEnemy = "",
+    badEndMsgFriendly = '"Power off" task failed.',
+    badEndMsgEnemy = "",
+    cancelEndMsgFriendly = "",
+    cancelEndMsgEnemy = "",
+    briefMsgFriendly = nil,
+    briefMsgEnemy = "",
+    markZoneName = "b05zone",
+    markText = '"Power off" substantion position'
+}
 
 table.insert(blueFixedWingTasksConfig, blue01_task)
 table.insert(blueFixedWingTasksConfig, blue02_task)
 table.insert(blueFixedWingTasksConfig, blue03_task)
+table.insert(blueFixedWingTasksConfig, blue04_task)
+table.insert(blueFixedWingTasksConfig, blue05_task)

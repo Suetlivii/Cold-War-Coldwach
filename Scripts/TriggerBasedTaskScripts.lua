@@ -136,7 +136,14 @@ function TaskContoller:CreateMark()
         return nil
     end
 
-    local markZoneVec2 = ZONE:FindByName(self.taskConfig.markZoneName):GetVec2()
+    local markZone = ZONE:FindByName(self.taskConfig.markZoneName)
+
+    if markZone == nil then 
+        Debug:Log("TaskContoller:CreateMark zone not found, returning nil " .. self.taskConfig.name)
+        return nil
+    end
+
+    local markZoneVec2 = markZone:GetVec2()
     local markZoneCoord = COORDINATE:NewFromVec2(markZoneVec2)
     local markID = markZoneCoord:MarkToCoalition(self.taskConfig.markText, self.taskConfig.coalition, true)
     self.markID = markID
