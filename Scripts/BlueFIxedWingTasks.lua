@@ -140,9 +140,38 @@ NAVIGATION: Use powerlines.]],
     markZoneName = "b05zone",
     markText = '"Power off" substantion position'
 }
+-------------------------------------------------------------------------------------------------------
+blue06_task = 
+{
+    name = 'b06',
+    coalition = 2,
+    startTrigger = "20601",
+    goodEndTrigger = "20602",
+    badEndTrigeer = "20603",
+    cancelTrigger = "20604",
+    startMsgFriendly = [[NAME: "Road hunting"
+
+OBJECTIVE: Find and destroy soviet supply column. They are moving from Krasnodar to Goryachiy Klyuch. Road is placed in squares EK17, EK16, EK15.  
+
+THREATS: Possible soviet fighters, 23-mm artillery, manpads. Be advised of SA-6 south from Krasnodar.
+
+NAVIGATION: Follow the road.]],
+    startMsgEnemy = "",
+    goodEndMsgFriendly = '"Road hunting" task completed.',
+    goodEndMsgEnemy = "",
+    badEndMsgFriendly = '"Road hunting" task failed.',
+    badEndMsgEnemy = "",
+    cancelEndMsgFriendly = "",
+    cancelEndMsgEnemy = "",
+    briefMsgFriendly = nil,
+    briefMsgEnemy = "",
+    markZoneName = "b06zone",
+    markText = '"Road hunting" road.'
+}
 
 table.insert(blueFixedWingTasksConfig, blue01_task)
 table.insert(blueFixedWingTasksConfig, blue02_task)
 table.insert(blueFixedWingTasksConfig, blue03_task)
 table.insert(blueFixedWingTasksConfig, blue04_task)
 table.insert(blueFixedWingTasksConfig, blue05_task)
+table.insert(blueFixedWingTasksConfig, blue06_task)
