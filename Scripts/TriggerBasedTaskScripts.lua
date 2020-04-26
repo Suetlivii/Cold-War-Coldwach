@@ -121,7 +121,20 @@ end
 
 function TaskContoller:MessageToFriendlyCoalition(text, duration)
     if text ~= "" then
-        local newMsg = MESSAGE:New(text, duration):ToCoalition(self.taskConfig.coalition)
+        local newMsg = MESSAGE:New(text, duration, nil, true):ToCoalition(self.taskConfig.coalition)
+    end
+end
+
+function TaskContoller:MessageToEnemyCoalition(text, duration)
+    local coal = 1
+    if self.taskConfig.coalition == 2 then
+        coal = 1
+    else
+        coal = 2
+    end
+
+    if text ~= "" then
+        local newMsg = MESSAGE:New(text, duration, nil, true):ToCoalition(coal)
     end
 end
 
@@ -152,19 +165,6 @@ end
 function TaskContoller:DestroyMark()
     if self.markID ~= nil then 
         COORDINATE:RemoveMark(self.markID)
-    end
-end
-
-function TaskContoller:MessageToEnemyCoalition(text, duration)
-    local coal = 1
-    if self.taskConfig.coalition == 2 then
-        coal = 1
-    else
-        coal = 2
-    end
-
-    if text ~= "" then
-        local newMsg = MESSAGE:New(text, duration):ToCoalition(coal)
     end
 end
 

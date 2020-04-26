@@ -89,7 +89,12 @@ end
 
 function TaskManager:OnTaskEnd(_taskConfig, _taskState)
     if #self._nextTaskConfigsList > 0 then
-        self:StartTasking()
+
+        self._sheduler = SCHEDULER:New( nil, 
+        function()
+            self:StartTasking()
+        end, {}, 20)
+
     else
         Debug:Log("TaskManager: all tasks are done, no more tasks to start. Manager name is " .. self._managerName)
         self._currentTask = nil
