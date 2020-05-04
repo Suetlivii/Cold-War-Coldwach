@@ -47,7 +47,6 @@ RedRotaryWingBriefTaskReportManager = TaskReportManager:New(RedRotaryWingTaskMan
 RotaryWingGroupMenuManager:AddListener(BlueRotaryWingBriefTaskReportManager)
 RotaryWingGroupMenuManager:AddListener(RedRotaryWingBriefTaskReportManager)
 
-
 --Group randomizer init -------------------------------------------------------------------------------------
 mainGroupRandomizer = GroupRandomizer:New()
 mainGroupRandomizer:SetKeyWords("perkill", "cntkill")

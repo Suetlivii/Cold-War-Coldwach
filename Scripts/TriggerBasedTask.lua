@@ -1,6 +1,7 @@
 TaskConfig = 
 {
     name = "CommonTask",
+    groupsPrefixes = { "Prefix1", "Prefix2" },
     coalition = 1,
     startTrigger = "101",
     goodEndTrigger = "102",
@@ -21,18 +22,30 @@ TaskConfig =
 }
 
 ------------------------------------------------------------------------------------------------------
---taskStates 
+-- TriggerBasedTask
+-- Trigger based task is a controller that will turn on and catch DCS mission editor flags
+-- All mission logic is made in DCS ME, this object will controll main flags (triggers) and report task
+-- How to use: 
+-- Create new object with taskConfig structure 
+-- Then start task with StartTask() function
+-- Add listener, when task ends it will call listener with OnTaskEnd(taskConfig, taskState)
+-- TaskStates
 -- 0 - not starter
--- 1 - active 
+-- 1 - active
 -- 2 - goodEnd
 -- 3 - badEnd
 -- 4 - canceled
 
 MESSAGE_TIME_ON_SCREEN = 45
 
-TaskContoller = {}
+TriggerBasedTask = {}
 
-function TaskContoller:New(_taskConfig)
+-- PUBLIC METHODS
+-- New()
+-- StartTask()
+-- AddOnEndEventListener()
+
+function TriggerBasedTask:New(_taskConfig)
     newObj = 
     {
         taskConfig = _taskConfig,
@@ -44,16 +57,28 @@ function TaskContoller:New(_taskConfig)
     return setmetatable(newObj, self)
 end
 
-function TaskContoller:StartTask()
+function TriggerBasedTask:StartTask()
     Debug:Log("StartTask called, task name is " .. self.taskConfig.name)
     self.taskState = 1
+
+    -- Setting brief message if brief msg is nill (will be start)
+    if self.taskConfig.briefMsgFriendly == nil then
+        self.taskConfig.startMsgFriendly = self.taskConfig.briefMsgFriendly
+    end
+
+    if self.taskConfig.briefMsgEnemy == nil then
+        self.taskConfig.startMsgEnemy = self.taskConfig.briefMsgEnemy
+    end
+
+    -- Setting Start DCS ME Flag to ON
     local startUserFlag = USERFLAG:New(self.taskConfig.startTrigger)
     startUserFlag:Set(1)
 
     self:MessageToFriendlyCoalition(self.taskConfig.startMsgFriendly, MESSAGE_TIME_ON_SCREEN)
     self:MessageToEnemyCoalition(self.taskConfig.startMsgEnemy, MESSAGE_TIME_ON_SCREEN)
 
-
+    -- Adding UserFlagCathers for 3 end conditions
+    -- If flag is ON, this object will be called with proper method
     local goodEndEvent = UserFlagCather:New(self.taskConfig.goodEndTrigger, true)
     goodEndEvent:AddListener(self, "OnGoodEndTrigger")
 
@@ -64,23 +89,77 @@ function TaskContoller:StartTask()
     cancelEndEvent:AddListener(self, "OnCancelEndTrigger")
 
     Debug:Log("StartTask end successfully, task name is " .. self.taskConfig.name)
+
+    -- Creating new mark on map 
     self:CreateMark()
 
     return true
 end
 
-function TaskContoller:AddOnEndEventListener(object)
+-- When task ended, it will call listener with OnTaskEnd(taskConfig, taskState)
+function TriggerBasedTask:AddOnEndEventListener(object)
     table.insert( self.onEndListeners, object )
 end
 
-function TaskContoller:EndTask()
+-- PRIVATE METHODS
+
+-- MESSAGING TO PLAYERS
+-- Message to group with name
+function TriggerBasedTask:MessageToGroup(groupName, text, duration)
+    local msgGroup = GROUP:FindByName( groupName )
+
+    if msgGroup ~= nil and text ~= "" then
+        local newMsg = MESSAGE:New(text, duration, nil, true):ToGroup(msgGroup)
+    end
+end
+
+-- Messages to all groups with prefix with coalition
+function TriggerBasedTask:MessageToGroupsWithPrefixWithCoalition(groupPrefix, coalition, text, duration)
+    local groups = SET_GROUP:New():FilterCoalitions(coalition):FilterPrefixes(groupPrefix):FilterOnce()
+    local groupsNames = groups:GetSetNames()
+    for i, v in ipairs(groupsNames) do
+        self:MessageToGroup( v, text, duration )
+    end
+end
+
+-- Messge to all FRIENDLY groups (in the same coalition as task) and with prefixes
+function TriggerBasedTask:MessageToFriendlyCoalition(text, duration)
+    for i, v in ipairs(self.taskConfig.groupsPrefixes) do 
+        local coal = self.taskConfig.coalition
+        self:MessageToGroupsWithPrefixWithCoalition(v, coal, text, duration)
+    end
+end
+
+-- Messge to all ENEMY groups (in the same coalition as task) and with prefixes
+function TriggerBasedTask:MessageToEnemyCoalition(text, duration)
+    for i, v in ipairs(self.taskConfig.groupsPrefixes) do 
+        local coal = self:ReverseCoalition(self.taskConfig.coalition)
+        self:MessageToGroupsWithPrefixWithCoalition(v, coal, text, duration)
+    end
+end
+
+-- Brief message to group (coalition resolving automatically)
+function TriggerBasedTask:BriefMessageToGroup(groupName, duration)
+    local msgGroup = GROUP:FindByName( groupName )
+    local groupCoal = msgGroup:GetCoalition()
+
+    if self.taskConfig.coalition == groupCoal then
+        self:MessageToGroup( groupName, self.taskConfig.briefMsgFriendly, duration )
+    else
+        self:MessageToGroup( groupName, self.taskConfig.briefMsgEnemy, duration )
+    end
+end
+
+-- TASK END LOGIC
+-- EndTask() destroying mark and calling all onEnd liesteners
+function TriggerBasedTask:EndTask()
     self:DestroyMark()
     for i, v in ipairs(self.onEndListeners) do
         v:OnTaskEnd(self.taskConfig, self.taskState)
     end
 end
 
-function TaskContoller:OnGoodEndTrigger()
+function TriggerBasedTask:OnGoodEndTrigger()
     if self.taskState ~= 1 then
         Debug:Log("LOGIC ERROR: OnGoodEndTrigger called with task state = " .. self.taskState .. " task name is " .. self.taskConfig.name)
         return 
@@ -93,7 +172,7 @@ function TaskContoller:OnGoodEndTrigger()
     self:EndTask()
 end
 
-function TaskContoller:OnBadEndTrigger()
+function TriggerBasedTask:OnBadEndTrigger()
     if self.taskState ~= 1 then
         Debug:Log("LOGIC ERROR: OnBadEndTrigger called with task state = " .. self.taskState .. " task name is " .. self.taskConfig.name)
         return 
@@ -106,7 +185,7 @@ function TaskContoller:OnBadEndTrigger()
     self:EndTask()
 end
 
-function TaskContoller:OnCancelEndTrigger()
+function TriggerBasedTask:OnCancelEndTrigger()
     if self.taskState ~= 1 then
         Debug:Log("LOGIC ERROR: OnCancelEndTrigger called with task state = " .. self.taskState .. " task name is " .. self.taskConfig.name)
         return 
@@ -119,40 +198,23 @@ function TaskContoller:OnCancelEndTrigger()
     self:EndTask()
 end
 
-function TaskContoller:MessageToFriendlyCoalition(text, duration)
-    if text ~= "" then
-        local newMsg = MESSAGE:New(text, duration, nil, true):ToCoalition(self.taskConfig.coalition)
-    end
-end
-
-function TaskContoller:MessageToEnemyCoalition(text, duration)
-    local coal = 1
-    if self.taskConfig.coalition == 2 then
-        coal = 1
-    else
-        coal = 2
-    end
-
-    if text ~= "" then
-        local newMsg = MESSAGE:New(text, duration, nil, true):ToCoalition(coal)
-    end
-end
-
-function TaskContoller:CreateMark()
+-- MARKS LOGIC
+-- Creating mark
+function TriggerBasedTask:CreateMark()
     if self.taskConfig.markZoneName == nil or self.taskConfig.markZoneName == "" then 
-        Debug:Log("TaskContoller:CreateMark markZoneName is nill or empty, task name is " .. self.taskConfig.name)
+        Debug:Log("TriggerBasedTask:CreateMark markZoneName is nill or empty, task name is " .. self.taskConfig.name)
         return nil
     end
 
     if self.taskConfig.markText == nil or self.taskConfig.markText == "" then 
-        Debug:Log("TaskContoller:CreateMark markText is nill or empty, task name is " .. self.taskConfig.name)
+        Debug:Log("TriggerBasedTask:CreateMark markText is nill or empty, task name is " .. self.taskConfig.name)
         return nil
     end
 
     local markZone = ZONE:FindByName(self.taskConfig.markZoneName)
 
     if markZone == nil then 
-        Debug:Log("TaskContoller:CreateMark zone not found, returning nil " .. self.taskConfig.name)
+        Debug:Log("TriggerBasedTask:CreateMark zone not found, returning nil " .. self.taskConfig.name)
         return nil
     end
 
@@ -162,40 +224,26 @@ function TaskContoller:CreateMark()
     self.markID = markID
 end
 
-function TaskContoller:DestroyMark()
+-- Destroying mark
+function TriggerBasedTask:DestroyMark()
     if self.markID ~= nil then 
         COORDINATE:RemoveMark(self.markID)
     end
 end
 
-function TaskContoller:MessageToGroup(groupName, text, duration)
-    local msgGroup = GROUP:FindByName( groupName )
+-- UTILITY
 
-    if msgGroup ~= nil and text ~= "" then
-        local newMsg = MESSAGE:New(text, duration, nil, true):ToGroup(msgGroup)
-    end
-end
-
-function TaskContoller:BriefMessageToGroup(groupName, duration)
-    local msgGroup = GROUP:FindByName( groupName )
-    local groupCoal = msgGroup:GetCoalition()
-
-    if self.taskConfig.coalition == groupCoal then 
-        if self.taskConfig.briefMsgFriendly == nil then 
-            self:MessageToGroup( groupName, self.taskConfig.startMsgFriendly, duration )
-        else
-            self:MessageToGroup( groupName, self.taskConfig.briefMsgFriendly, duration )
-        end
+--Reversing coalition, returning enemy coalition number
+function TriggerBasedTask:ReverseCoalition(coalition)
+    if coalition == 1 then 
+        return 2 
     else
-        if self.taskConfig.briefMsgEnemy == nil then 
-            self:MessageToGroup( groupName, self.taskConfig.startMsgEnemy, duration )
-        else
-            self:MessageToGroup( groupName, self.taskConfig.briefMsgEnemy, duration )
-        end
+        return 1 
     end
 end
 
-function TaskContoller:GetCoalitionOfGroup(groupName)
+-- Getting coalition of a group with group name
+function TriggerBasedTask:GetCoalitionOfGroup(groupName)
     local group = GROUP:FindByName( groupName )
     return group:GetCoalition()
 end
