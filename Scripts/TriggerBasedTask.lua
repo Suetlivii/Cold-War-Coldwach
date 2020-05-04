@@ -63,11 +63,11 @@ function TriggerBasedTask:StartTask()
 
     -- Setting brief message if brief msg is nill (will be start)
     if self.taskConfig.briefMsgFriendly == nil then
-        self.taskConfig.startMsgFriendly = self.taskConfig.briefMsgFriendly
+        self.taskConfig.briefMsgFriendly = self.taskConfig.startMsgFriendly
     end
 
     if self.taskConfig.briefMsgEnemy == nil then
-        self.taskConfig.startMsgEnemy = self.taskConfig.briefMsgEnemy
+        self.taskConfig.briefMsgEnemy = self.taskConfig.startMsgEnemy
     end
 
     -- Setting Start DCS ME Flag to ON
@@ -115,26 +115,28 @@ end
 
 -- Messages to all groups with prefix with coalition
 function TriggerBasedTask:MessageToGroupsWithPrefixWithCoalition(groupPrefix, coalition, text, duration)
-    local groups = SET_GROUP:New():FilterCoalitions(coalition):FilterPrefixes(groupPrefix):FilterOnce()
+    local coalName = self:GetCoalitionName(coalition)
+    local groups = SET_GROUP:New():FilterPrefixes(groupPrefix):FilterCoalitions(coalName):FilterOnce()
     local groupsNames = groups:GetSetNames()
     for i, v in ipairs(groupsNames) do
+        Debug:Log("TriggerBasedTask:MessageToGroupsWithPrefixWithCoalition(): Message to group " .. v)
         self:MessageToGroup( v, text, duration )
     end
 end
 
 -- Messge to all FRIENDLY groups (in the same coalition as task) and with prefixes
 function TriggerBasedTask:MessageToFriendlyCoalition(text, duration)
-    for i, v in ipairs(self.taskConfig.groupsPrefixes) do 
+    for i, v in ipairs(self.taskConfig.groupsPrefixes) do
         local coal = self.taskConfig.coalition
-        self:MessageToGroupsWithPrefixWithCoalition(v, coal, text, duration)
+        self:MessageToGroupsWithPrefixWithCoalition(self.taskConfig.groupsPrefixes[i], coal, text, duration)
     end
 end
 
 -- Messge to all ENEMY groups (in the same coalition as task) and with prefixes
 function TriggerBasedTask:MessageToEnemyCoalition(text, duration)
-    for i, v in ipairs(self.taskConfig.groupsPrefixes) do 
+    for i, v in ipairs(self.taskConfig.groupsPrefixes) do
         local coal = self:ReverseCoalition(self.taskConfig.coalition)
-        self:MessageToGroupsWithPrefixWithCoalition(v, coal, text, duration)
+        self:MessageToGroupsWithPrefixWithCoalition(self.taskConfig.groupsPrefixes[i], coal, text, duration)
     end
 end
 
@@ -143,10 +145,12 @@ function TriggerBasedTask:BriefMessageToGroup(groupName, duration)
     local msgGroup = GROUP:FindByName( groupName )
     local groupCoal = msgGroup:GetCoalition()
 
-    if self.taskConfig.coalition == groupCoal then
-        self:MessageToGroup( groupName, self.taskConfig.briefMsgFriendly, duration )
-    else
-        self:MessageToGroup( groupName, self.taskConfig.briefMsgEnemy, duration )
+    if self.taskState == 1 then 
+        if self.taskConfig.coalition == groupCoal then
+            self:MessageToGroup( groupName, self.taskConfig.briefMsgFriendly, duration )
+        else
+            self:MessageToGroup( groupName, self.taskConfig.briefMsgEnemy, duration )
+        end
     end
 end
 
@@ -246,6 +250,12 @@ end
 function TriggerBasedTask:GetCoalitionOfGroup(groupName)
     local group = GROUP:FindByName( groupName )
     return group:GetCoalition()
+end
+
+-- Getting coalition name
+function TriggerBasedTask:GetCoalitionName(coalitionNum)
+    local coals = { "red", "blue" }
+    return coals[coalitionNum]
 end
 
 ------------------------------------------------------------------------------------------------------

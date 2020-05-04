@@ -21,12 +21,12 @@ function TaskManager:StartTasking()
 
     Debug:Log("TaskManager:StartTasking, starting tasking")
     local randomTaskConfig = self:GetRandomTask(self._nextTaskConfigsList)
-    local taskToStart = TaskContoller:New(randomTaskConfig)
+    local taskToStart = TriggerBasedTask:New(randomTaskConfig)
 
     if self._firstTaskName ~= nil then 
         local firstTaskConfig = self:FindTask(self._firstTaskName, self._nextTaskConfigsList)
         if firstTaskConfig ~= nil then 
-            taskToStart = TaskContoller:New(firstTaskConfig)
+            taskToStart = TriggerBasedTask:New(firstTaskConfig)
             self._firstTaskName = nil
         end
     end
