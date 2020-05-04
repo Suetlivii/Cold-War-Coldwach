@@ -4,6 +4,7 @@ redFixedWingTasksConfig = {}
 red01_task = 
 {
     name = 'r01',
+    groupsPrefixes = { "FW" },
     coalition = 1,
     startTrigger = "10101",
     goodEndTrigger = "10102",
@@ -32,6 +33,7 @@ NAVIGATION: Use railroad for navigation reference. Use Krasnodar-Center RSBN (Ch
 red02_task = 
 {
     name = 'r02',
+    groupsPrefixes = { "FW" },
     coalition = 1,
     startTrigger = "10201",
     goodEndTrigger = "10202",

@@ -4,6 +4,7 @@ blueFixedWingTasksConfig = {}
 blue01_task = 
 {
     name = 'b01',
+    groupsPrefixes = { "FW" },
     coalition = 2,
     startTrigger = "20101",
     goodEndTrigger = "20102",
@@ -32,6 +33,7 @@ NAVIGATION: Follow the railroad from the Tuapse city.]],
 blue02_task = 
 {
     name = 'b02',
+    groupsPrefixes = { "FW" },
     coalition = 2,
     startTrigger = "20201",
     goodEndTrigger = "20202",
@@ -60,6 +62,7 @@ NAVIGATION: Follow the coast line.]],
 blue03_task = 
 {
     name = 'b03',
+    groupsPrefixes = { "FW" },
     coalition = 2,
     startTrigger = "20301",
     goodEndTrigger = "20302",
@@ -88,6 +91,7 @@ NAVIGATION: Use railroad as reference.]],
 blue04_task = 
 {
     name = 'b04',
+    groupsPrefixes = { "FW" },
     coalition = 2,
     startTrigger = "20401",
     goodEndTrigger = "20402",
@@ -116,6 +120,7 @@ NAVIGATION: Use road from Dzhubga town (square DK70).]],
 blue05_task = 
 {
     name = 'b05',
+    groupsPrefixes = { "FW" },
     coalition = 2,
     startTrigger = "20501",
     goodEndTrigger = "20502",
@@ -144,6 +149,7 @@ NAVIGATION: Use powerlines.]],
 blue06_task = 
 {
     name = 'b06',
+    groupsPrefixes = { "FW" },
     coalition = 2,
     startTrigger = "20601",
     goodEndTrigger = "20602",
@@ -168,10 +174,40 @@ NAVIGATION: Follow the road.]],
     markZoneName = "b06zone",
     markText = '"Road hunting" road.'
 }
+-------------------------------------------------------------------------------------------------------
+blue07_task = 
+{
+    name = 'b07',
+    groupsPrefixes = { "FW" },
+    coalition = 2,
+    startTrigger = "20701",
+    goodEndTrigger = "20702",
+    badEndTrigeer = "20703",
+    cancelTrigger = "20704",
+    startMsgFriendly = [[NAME: "Uragan"
+
+OBJECTIVE: Destroy soviet BM-27 MLRS launchers. They are going to attack out forces so hurry up.  
+
+THREATS: Possible soviet fighters, 23-mm artillery, manpads. Be advised of SA-6 at Maykop.
+
+NAVIGATION: Follow the railroad from Tuapse.]],
+    startMsgEnemy = "",
+    goodEndMsgFriendly = '"Uragan" task completed.',
+    goodEndMsgEnemy = "",
+    badEndMsgFriendly = '"Uragan" task failed.',
+    badEndMsgEnemy = "",
+    cancelEndMsgFriendly = "",
+    cancelEndMsgEnemy = "",
+    briefMsgFriendly = nil,
+    briefMsgEnemy = "",
+    markZoneName = "b07zone",
+    markText = '"Uragan" targets position.'
+}
 
 table.insert(blueFixedWingTasksConfig, blue01_task)
 table.insert(blueFixedWingTasksConfig, blue02_task)
-table.insert(blueFixedWingTasksConfig, blue03_task)
+--table.insert(blueFixedWingTasksConfig, blue03_task)
 table.insert(blueFixedWingTasksConfig, blue04_task)
 table.insert(blueFixedWingTasksConfig, blue05_task)
 table.insert(blueFixedWingTasksConfig, blue06_task)
+table.insert(blueFixedWingTasksConfig, blue07_task)

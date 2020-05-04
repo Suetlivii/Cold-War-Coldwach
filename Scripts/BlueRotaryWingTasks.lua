@@ -4,6 +4,7 @@ blueRotaryWingTasksConfig = {}
 rblue01_task = 
 {
     name = "rb01",
+    groupsPrefixes = { "RW" },
     coalition = 2,
     startTrigger = "40101",
     goodEndTrigger = "40102",
@@ -32,6 +33,7 @@ NAVIGATION: Fly heading 356 from Warsaw FARP, look for the powerlines.]],
 rblue02_task = 
 {
     name = "rb02",
+    groupsPrefixes = { "RW" },
     coalition = 2,
     startTrigger = "40201",
     goodEndTrigger = "40202",
