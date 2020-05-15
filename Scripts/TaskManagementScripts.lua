@@ -1,3 +1,14 @@
+------------------------------------------------------------------------------------------------------
+-- TaskManager
+-- Controlling tasks working 
+-- Creating TriggerBasedTasks from given config, starts new tasks when previous is ended
+-- How to use:
+-- Create new TaskManager object with :New(managerName)
+-- Set taskConfig with :SetMissions(tasksList)
+-- OPTIONAL: Set first task by task name with :SetFirstTask(taskName)
+-- OPTIONAL: Set time between tasks with :SetTimeBetween(timeBetween, timeRand)
+-- Start tasking with :StartTasking()
+
 TaskManager = {}
 
 function TaskManager:New(_managerName)
@@ -7,10 +18,25 @@ function TaskManager:New(_managerName)
         _taskConfigsList = nil,
         _nextTaskConfigsList = nil,
         _currentTask = nil,
-        _firstTaskName = nil
+        _firstTaskName = nil,
+        _timeBetween = 20,
+        _timeRand = 0
     }
     self.__index = self
     return setmetatable(newObj, self)
+end
+
+-- PUBLIC METHODS
+-- New()
+-- SetMissions()
+-- StartTasking()
+-- OPTIONAL: SetFirstTask()
+-- OPTIONAL: SetTimeBetween()
+
+function TaskManager:SetMissions(_taskConfigsList)
+    Debug:Log("TaskManager:SetMissions: setting tasks, count is " .. #_taskConfigsList)
+    self._taskConfigsList = _taskConfigsList
+    self._nextTaskConfigsList = self:DeepCopyTable(_taskConfigsList)
 end
 
 function TaskManager:StartTasking()
@@ -42,6 +68,23 @@ function TaskManager:StartTasking()
         return nil
     end
 end
+
+function TaskManager:SetFirstTask(_taskName)
+    if _taskName ~= nil and _taskName ~= "" then 
+        self._firstTaskName = _taskName
+    end
+end
+
+function TaskManager:SetTimeBetween(_timeBetween, _timeRand)
+    if _timeBetween ~= nil and _timeBetween ~= 0 then
+        self._timeBetween = _timeBetween
+    end
+
+    if _timeRand > 0 and _timeRand < 1 then 
+        self._timeRand = _timeRand
+    end
+end
+-- PRIVATE METHODS
 
 function TaskManager:GetRandomTask(_taskList)
     if #_taskList > 0 then
@@ -75,25 +118,13 @@ function TaskManager:FindTask(_taskName, _list)
     return nil
 end
 
-function TaskManager:SetMissions(_taskConfigsList)
-    Debug:Log("TaskManager:SetMissions: setting tasks, count is " .. #_taskConfigsList)
-    self._taskConfigsList = _taskConfigsList
-    self._nextTaskConfigsList = self:DeepCopyTable(_taskConfigsList)
-end
-
-function TaskManager:SetFirstTask(_taskName)
-    if _taskName ~= nil and _taskName ~= "" then 
-        self._firstTaskName = _taskName
-    end
-end
-
 function TaskManager:OnTaskEnd(_taskConfig, _taskState)
     if #self._nextTaskConfigsList > 0 then
 
         self._sheduler = SCHEDULER:New( nil, 
         function()
             self:StartTasking()
-        end, {}, 20)
+        end, {}, self._timeBetween, 3600, self._timeRand, 5)
 
     else
         Debug:Log("TaskManager: all tasks are done, no more tasks to start. Manager name is " .. self._managerName)
